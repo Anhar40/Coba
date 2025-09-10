@@ -115,6 +115,90 @@
             </div>
           `;
           container.appendChild(card);
+<script>
+    // Aktifkan dark mode di Tailwind
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-600 dark:bg-blue-800 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
+      <h1 class="text-2xl font-bold">🎬 Video API</h1>
+
+      <!-- Search + Dark mode toggle -->
+      <div class="flex items-center space-x-3">
+        <form id="searchForm" class="flex">
+          <input id="searchInput" type="text" placeholder="Cari video..." class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none w-40 sm:w-56">
+          <button class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg">🔍</button>
+        </form>
+
+        <!-- Tombol dark mode -->
+        <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg shadow transition">
+          🌙
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Konten -->
+  <main class="flex-grow max-w-6xl mx-auto px-4 py-6">
+    <!-- Grid Video -->
+    <div id="video-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+
+    <!-- Tombol Load More -->
+    <div class="flex justify-center mt-8">
+      <button id="loadMore" class="px-6 py-3 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 text-white text-lg rounded-xl shadow-md transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+        Load More
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 dark:bg-gray-950 text-gray-300 text-center py-4 mt-6">
+    <p>© 2025 BKP IND.</p>
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    let currentQuery = "teen";
+    const perPage = 12; 
+    const baseUrl = "https://www.example.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
+
+    async function loadVideos(page = 1, query = "teen") {
+      try {
+        const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        const container = document.getElementById("video-list");
+
+        data.videos.forEach(video => {
+          const card = document.createElement("div");
+          card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
+
+          card.innerHTML = `
+            <div class="relative">
+              <img src="${video.default_thumb}" alt="${video.title}" class="w-full h-40 object-cover group-hover:opacity-80">
+              <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${video.length_min}</span>
+            </div>
+            <div class="p-3">
+              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">${video.title}</h3>
+              <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
+                <span>👁️ ${video.views}</span>
+                <span>⭐ ${video.rate}%</span>
+              </div>
+              <p class="text-xs text-gray-400">Added: ${video.added}</p>
+            </div>
+            <!-- Embed video muncul saat hover -->
+            <div class="hidden group-hover:block p-2">
+              <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg"></iframe>
+            </div>
+          `;
+          container.appendChild(card);
         });
 
         if (page >= data.total_pages) {
@@ -155,8 +239,8 @@
     const darkToggle = document.getElementById("darkToggle");
     const html = document.documentElement;
 
-    if (localStorage.theme === "dark" || 
-        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    // Cek preferensi user
+    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
       html.classList.add("dark");
       darkToggle.innerText = "☀️";
     }
@@ -174,3 +258,4 @@
   </script>
 </body>
 </html>
+
