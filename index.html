@@ -93,8 +93,10 @@
           card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
 
           card.innerHTML = `
-            <div class="relative">
-              <img src="${video.thumbs}" alt="${video.title}" class="w-full h-40 object-cover group-hover:opacity-80">
+             <div class="relative">
+              <a href="embed.html#${video.embed}">
+                <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
+               </a>
               <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${video.length_min}</span>
             </div>
             <div class="p-3">
@@ -105,13 +107,10 @@
               </div>
               <p class="text-xs text-gray-400">Added: ${video.added}</p>
             </div>
-            <!-- Embed video muncul saat hover -->
-            <div class="hidden group-hover:block p-2">
-              <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg"></iframe>
-            </div>
           `;
           container.appendChild(card);
         });
+
 
         if (page >= data.total_pages) {
           const btn = document.getElementById("loadMore");
@@ -169,5 +168,4 @@
     });
   </script>
 </body>
-</html>
-
+        </html>
