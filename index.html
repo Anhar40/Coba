@@ -76,97 +76,113 @@
   </footer>
    <script type='text/javascript' src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
   <script>
-    let currentPage = 1;
-    let currentQuery = "teen";
-    const perPage = 12; 
-    const baseUrl = "https://www.eporner.com/api/v2/video/search/?query=teen&per_page=10&page=2&thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
+  let currentPage = 1;
+  let currentQuery = "teen";
+  const perPage = 12;
 
-    async function loadVideos(page = 1, query = "teen") {
-      try {
-        const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
-        const res = await fetch(url);
-        const data = await res.json();
+  // Base URL tanpa param page/query biar fleksibel
+  const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
 
-        const container = document.getElementById("video-list");
+  // Daftar query random (optional)
+  const queryList = ["teen", "milf", "amateur", "asian", "couple", "solo"];
 
-        data.videos.forEach(video => {
-          const card = document.createElement("div");
-          card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
+  // Ambil query random dari list
+  function getRandomQuery() {
+    return queryList[Math.floor(Math.random() * queryList.length)];
+  }
 
-          card.innerHTML = `
-             <div class="relative">
-              <a href="embed.html#${video.embed}">
-                <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
-               </a>
-              <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${video.length_min}</span>
+  // Ambil page random dari 1–50 (bisa disesuaikan dengan total_pages API)
+  function getRandomPage(max = 50) {
+    return Math.floor(Math.random() * max) + 1;
+  }
+
+  async function loadVideos(page = 1, query = "teen") {
+    try {
+      const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const container = document.getElementById("video-list");
+
+      data.videos.forEach(video => {
+        const card = document.createElement("div");
+        card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
+
+        card.innerHTML = `
+          <div class="relative">
+            <a href="embed.html#${video.embed}">
+              <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
+            </a>
+            <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${video.length_min}</span>
+          </div>
+          <div class="p-3">
+            <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">${video.title}</h3>
+            <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
+              <span>👁️ ${video.views}</span>
+              <span>⭐ ${video.rate}%</span>
             </div>
-            <div class="p-3">
-              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">${video.title}</h3>
-              <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
-                <span>👁️ ${video.views}</span>
-                <span>⭐ ${video.rate}%</span>
-              </div>
-              <p class="text-xs text-gray-400">Added: ${video.added}</p>
-            </div>
-          `;
-          container.appendChild(card);
-        });
+            <p class="text-xs text-gray-400">Added: ${video.added}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
 
-
-        if (page >= data.total_pages) {
-          const btn = document.getElementById("loadMore");
-          btn.disabled = true;
-          btn.innerText = "Tidak ada lagi video";
-        }
-
-      } catch (err) {
-        console.error("Gagal fetch video:", err);
+      if (page >= data.total_pages) {
+        const btn = document.getElementById("loadMore");
+        btn.disabled = true;
+        btn.innerText = "Tidak ada lagi video";
       }
-    }
 
-    // Load pertama kali
+    } catch (err) {
+      console.error("Gagal fetch video:", err);
+    }
+  }
+
+  // Load pertama kali (random query & random page)
+  currentQuery = getRandomQuery();
+  currentPage = getRandomPage(100); // misalnya max 100 page
+  loadVideos(currentPage, currentQuery);
+
+  // Tombol Load More
+  document.getElementById("loadMore").addEventListener("click", () => {
+    currentPage++;
     loadVideos(currentPage, currentQuery);
+  });
 
-    // Tombol Load More
-    document.getElementById("loadMore").addEventListener("click", () => {
-      currentPage++;
+  // Search form
+  document.getElementById("searchForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const query = document.getElementById("searchInput").value.trim();
+    if (query) {
+      currentPage = 1;
+      currentQuery = query;
+      document.getElementById("video-list").innerHTML = ""; // reset
+      document.getElementById("loadMore").disabled = false;
+      document.getElementById("loadMore").innerText = "Load More";
       loadVideos(currentPage, currentQuery);
-    });
-
-    // Search form
-    document.getElementById("searchForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const query = document.getElementById("searchInput").value.trim();
-      if (query) {
-        currentPage = 1;
-        currentQuery = query;
-        document.getElementById("video-list").innerHTML = ""; // reset
-        document.getElementById("loadMore").disabled = false;
-        document.getElementById("loadMore").innerText = "Load More";
-        loadVideos(currentPage, currentQuery);
-      }
-    });
-
-    // Dark mode toggle
-    const darkToggle = document.getElementById("darkToggle");
-    const html = document.documentElement;
-
-    // Cek preferensi user
-    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      html.classList.add("dark");
-      darkToggle.innerText = "☀️";
     }
+  });
 
-    darkToggle.addEventListener("click", () => {
-      html.classList.toggle("dark");
-      if (html.classList.contains("dark")) {
-        localStorage.theme = "dark";
-        darkToggle.innerText = "☀️";
-      } else {
-        localStorage.theme = "light";
-        darkToggle.innerText = "🌙";
-      }
-    });
-  </script>
+  // Dark mode toggle
+  const darkToggle = document.getElementById("darkToggle");
+  const html = document.documentElement;
+
+  if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    html.classList.add("dark");
+    darkToggle.innerText = "☀️";
+  }
+
+  darkToggle.addEventListener("click", () => {
+    html.classList.toggle("dark");
+    if (html.classList.contains("dark")) {
+      localStorage.theme = "dark";
+      darkToggle.innerText = "☀️";
+    } else {
+      localStorage.theme = "light";
+      darkToggle.innerText = "🌙";
+    }
+  });
+    </script>
+  
 </body>
         </html>
