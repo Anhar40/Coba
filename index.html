@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,16 @@
 
   <!-- SEO Meta Tags -->
   <meta name="google-site-verification" content="fLb-2SuPUVg14QQlOtM5GzleweBsmQ_Qc48dBuZ78j0" />
-  <meta name="description" content="BKP IND - Platform streaming Video Bokep terbaru, trending, dan populer dengan tampilan modern dan user-friendly. Cari, tonton, dan temukan video favoritmu dengan mudah.">
-  <meta name="keywords" content="Bokep Indo, video Bokep, video porno, streaming bokep, koleksi video bokep terbaru, BKP IND, bokep terbaru, bokep viral, Indonesia porno, bokep terbaru terviral, Indonesia viral, viral indo, viral Indonesia, viral tiktok, viral">
+  <meta name="description"
+    content="BKP IND - Platform streaming Video Bokep terbaru, trending, dan populer dengan tampilan modern dan user-friendly. Cari, tonton, dan temukan video favoritmu dengan mudah.">
+  <meta name="keywords"
+    content="Bokep Indo, video Bokep, video porno, streaming bokep, koleksi video bokep terbaru, BKP IND, bokep terbaru, bokep viral, Indonesia porno, bokep terbaru terviral, Indonesia viral, viral indo, viral Indonesia, viral tiktok, viral">
   <meta name="author" content="BKP IND">
 
   <!-- Open Graph (untuk preview di sosial media) -->
   <meta property="og:title" content="BKP IND - Koleksi Video BKP Terbaru">
-  <meta property="og:description" content="Nikmati koleksi video bokep terbaru dan trending dengan desain modern dan responsif.">
+  <meta property="og:description"
+    content="Nikmati koleksi video bokep terbaru dan trending dengan desain modern dan responsif.">
   <meta property="og:image" content="https://bkpind.vercel.app/logo.jpg">
   <meta property="og:url" content="https://bkpind.vercel.app">
   <meta property="og:type" content="website">
@@ -26,15 +30,16 @@
 
   <!-- Favicon -->
   <link rel="icon" href="logo.jpg" type="image/svg+xml">
-<script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<script>
+  <script>
     // Aktifkan dark mode di Tailwind
     tailwind.config = {
       darkMode: 'class'
     }
   </script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
 
   <!-- Navbar -->
@@ -45,12 +50,14 @@
       <!-- Search + Dark mode toggle -->
       <div class="flex items-center space-x-3">
         <form id="searchForm" class="flex">
-          <input id="searchInput" type="text" placeholder="Cari video..." class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none w-40 sm:w-56">
+          <input id="searchInput" type="text" placeholder="Cari video..."
+            class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none w-40 sm:w-56">
           <button class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg">🔍</button>
         </form>
 
         <!-- Tombol dark mode -->
-        <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg shadow transition">
+        <button id="darkToggle"
+          class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg shadow transition">
           🌙
         </button>
       </div>
@@ -64,7 +71,8 @@
 
     <!-- Tombol Load More -->
     <div class="flex justify-center mt-8">
-      <button id="loadMore" class="px-6 py-3 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 text-white text-lg rounded-xl shadow-md transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+      <button id="loadMore"
+        class="px-6 py-3 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 text-white text-lg rounded-xl shadow-md transition disabled:bg-gray-400 disabled:cursor-not-allowed">
         Load More
       </button>
     </div>
@@ -74,115 +82,144 @@
   <footer class="bg-gray-800 dark:bg-gray-950 text-gray-300 text-center py-4 mt-6">
     <p>© 2025 BKP IND.</p>
   </footer>
-   <script type='text/javascript' src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
+  <script type='text/javascript'
+    src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
   <script>
-  let currentPage = 1;
-  let currentQuery = "teen";
-  const perPage = 12;
+    let currentPage = 1;
+    let currentQuery = "teen";
+    const perPage = 12;
 
-  // Base URL tanpa param page/query biar fleksibel
-  const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
+    // Base URL tanpa param page/query biar fleksibel
+    const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
 
-  // Daftar query random (optional)
-  const queryList = ["teen", "milf", "amateur", "asian", "couple", "solo"];
+    // Daftar query random (optional)
+    const queryList = ["teen", "milf", "amateur", "asian", "couple", "solo"];
 
-  // Ambil query random dari list
-  function getRandomQuery() {
-    return queryList[Math.floor(Math.random() * queryList.length)];
-  }
+    // Ambil query random dari list
+    function getRandomQuery() {
+      return queryList[Math.floor(Math.random() * queryList.length)];
+    }
 
-  // Ambil page random dari 1–50 (bisa disesuaikan dengan total_pages API)
-  function getRandomPage(max = 50) {
-    return Math.floor(Math.random() * max) + 1;
-  }
+    // Ambil page random dari 1–50 (bisa disesuaikan dengan total_pages API)
+    function getRandomPage(max = 50) {
+      return Math.floor(Math.random() * max) + 1;
+    }
 
-  async function loadVideos(page = 1, query = "teen") {
-    try {
-      const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
-      const res = await fetch(url);
-      const data = await res.json();
+    async function loadVideos(page = 1, query = "teen") {
+      try {
+        const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
+        const res = await fetch(url);
+        const data = await res.json();
 
-      const container = document.getElementById("video-list");
+        const container = document.getElementById("video-list");
 
-      data.videos.forEach(video => {
-        const card = document.createElement("div");
-        card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
+        data.videos.forEach(video => {
+          const card = document.createElement("div");
+          card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
 
-        card.innerHTML = `
-          <div class="relative">
-            <a href="embed.html#${video.embed}" target="_blank">
-              <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
-            </a>
-            <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${video.length_min}</span>
-          </div>
-          <div class="p-3">
-            <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">${video.title}</h3>
-            <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
-              <span>👁️ ${video.views}</span>
-              <span>⭐ ${video.rate}%</span>
-            </div>
-            <p class="text-xs text-gray-400">Added: ${video.added}</p>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+          // masukkan shortlink ke data-ad
+          card.innerHTML = `
+    <div class="relative">
+      <a href="#" 
+         class="video-link" 
+         data-embed="embed.html#${video.embed}" 
+         data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
+        <iframe src="${video.embed}" 
+                allowfullscreen 
+                class="w-full h-32 rounded-lg pointer-events-none"></iframe>
+      </a>
+      <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+        ${video.length_min}
+      </span>
+    </div>
+    <div class="p-3">
+      <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
+        ${video.title}
+      </h3>
+      <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
+        <span>👁️ ${video.views}</span>
+        <span>⭐ ${video.rate}%</span>
+      </div>
+      <p class="text-xs text-gray-400">Added: ${video.added}</p>
+    </div>
+  `;
+          container.appendChild(card);
+        });
 
-      if (page >= data.total_pages) {
-        const btn = document.getElementById("loadMore");
-        btn.disabled = true;
-        btn.innerText = "Tidak ada lagi video";
+        // event listener
+        container.addEventListener("click", e => {
+          const link = e.target.closest(".video-link");
+          if (link) {
+            e.preventDefault();
+
+            // buka shortlink di tab baru
+            window.open(link.dataset.ad, "_blank");
+
+            // setelah delay (misal 3 detik) buka video embed
+            setTimeout(() => {
+              window.location.href = link.dataset.embed;
+            }, 3000); // ganti angka 3000 = 3 detik
+          }
+        });
+
+
+        if (page >= data.total_pages) {
+          const btn = document.getElementById("loadMore");
+          btn.disabled = true;
+          btn.innerText = "Tidak ada lagi video";
+        }
+
+      } catch (err) {
+        console.error("Gagal fetch video:", err);
       }
-
-    } catch (err) {
-      console.error("Gagal fetch video:", err);
     }
-  }
 
-  // Load pertama kali (random query & random page)
-  currentQuery = getRandomQuery();
-  currentPage = getRandomPage(100); // misalnya max 100 page
-  loadVideos(currentPage, currentQuery);
-
-  // Tombol Load More
-  document.getElementById("loadMore").addEventListener("click", () => {
-    currentPage++;
+    // Load pertama kali (random query & random page)
+    currentQuery = getRandomQuery();
+    currentPage = getRandomPage(100); // misalnya max 100 page
     loadVideos(currentPage, currentQuery);
-  });
 
-  // Search form
-  document.getElementById("searchForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const query = document.getElementById("searchInput").value.trim();
-    if (query) {
-      currentPage = 1;
-      currentQuery = query;
-      document.getElementById("video-list").innerHTML = ""; // reset
-      document.getElementById("loadMore").disabled = false;
-      document.getElementById("loadMore").innerText = "Load More";
+    // Tombol Load More
+    document.getElementById("loadMore").addEventListener("click", () => {
+      currentPage++;
       loadVideos(currentPage, currentQuery);
-    }
-  });
+    });
 
-  // Dark mode toggle
-  const darkToggle = document.getElementById("darkToggle");
-  const html = document.documentElement;
+    // Search form
+    document.getElementById("searchForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const query = document.getElementById("searchInput").value.trim();
+      if (query) {
+        currentPage = 1;
+        currentQuery = query;
+        document.getElementById("video-list").innerHTML = ""; // reset
+        document.getElementById("loadMore").disabled = false;
+        document.getElementById("loadMore").innerText = "Load More";
+        loadVideos(currentPage, currentQuery);
+      }
+    });
 
-  if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-    html.classList.add("dark");
-    darkToggle.innerText = "☀️";
-  }
+    // Dark mode toggle
+    const darkToggle = document.getElementById("darkToggle");
+    const html = document.documentElement;
 
-  darkToggle.addEventListener("click", () => {
-    html.classList.toggle("dark");
-    if (html.classList.contains("dark")) {
-      localStorage.theme = "dark";
+    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      html.classList.add("dark");
       darkToggle.innerText = "☀️";
-    } else {
-      localStorage.theme = "light";
-      darkToggle.innerText = "🌙";
     }
-  });
-    </script>
-  
+
+    darkToggle.addEventListener("click", () => {
+      html.classList.toggle("dark");
+      if (html.classList.contains("dark")) {
+        localStorage.theme = "dark";
+        darkToggle.innerText = "☀️";
+      } else {
+        localStorage.theme = "light";
+        darkToggle.innerText = "🌙";
+      }
+    });
+  </script>
+
 </body>
-        </html>
+
+</html>
