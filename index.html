@@ -167,14 +167,17 @@
       e.preventDefault();
       const p = Math.max(1, parseInt(document.getElementById("pageInput").value) || 1);
       loadVideos(p, currentQuery);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
     document.getElementById("prevPage").addEventListener("click", () => {
       if (currentPage > 1) loadVideos(currentPage - 1, currentQuery);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
     document.getElementById("nextPage").addEventListener("click", () => {
       loadVideos(currentPage + 1, currentQuery);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
     /* ---------- DARK MODE ---------- */
