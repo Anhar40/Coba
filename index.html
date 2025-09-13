@@ -1,209 +1,212 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BKP IND - Koleksi Video BKP Terbaru</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' }
   </script>
+  <style>
+    /* line-clamp-2 (bila plugin tak ada) */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
-
-  <!-- Navbar -->
+  <!-- NAVBAR -->
   <nav class="bg-blue-600 dark:bg-blue-800 text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
-      <!-- Logo + Judul -->
-      <a href="/" class="flex items-center space-x-3">
-        <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
-        
-      </a>
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 shrink-0">
+          <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+          <span class="hidden sm:inline font-semibold">BKP IND</span>
+        </a>
 
-      <!-- Search + Dark mode toggle -->
-      <div class="flex items-center space-x-3">
-        <form id="searchForm" class="flex">
-          <input id="searchInput" type="text" placeholder="Cari video..."
-            class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none w-40 sm:w-56">
-          <button class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg">🔍</button>
-        </form>
-
-        <!-- Tombol dark mode -->
-        <button id="darkToggle"
-          class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg shadow transition">
-          🌙
-        </button>
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <form id="searchForm" class="flex w-full sm:w-auto">
+            <input id="searchInput" type="text" placeholder="Cari video..."
+              class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700
+                     focus:outline-none w-full sm:w-56">
+            <button type="submit"
+              class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg shrink-0">🔍</button>
+          </form>
+          <button id="darkToggle"
+            class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200
+                   px-3 py-2 rounded-lg shadow transition shrink-0">🌙</button>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Konten -->
-  <main class="flex-grow max-w-6xl mx-auto px-4 py-6">
+  <!-- KONTEN -->
+  <main class="flex-grow max-w-6xl mx-auto px-4 py-6 w-full">
     <div id="video-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
 
-    <!-- Navigasi Halaman -->
+    <!-- NAVIGASI HALAMAN -->
     <div class="flex justify-center items-center mt-8 space-x-2">
       <button id="prevPage"
-        class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">
-        ◀ Prev
-      </button>
+        class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">◀ Prev</button>
 
       <form id="pageForm" class="flex items-center space-x-2">
         <label for="pageInput" class="text-gray-700 dark:text-gray-300">Page:</label>
         <input id="pageInput" type="number" min="1"
-          class="w-16 px-2 py-1 rounded border dark:bg-gray-700 dark:text-gray-200" />
+          class="w-16 px-2 py-1 rounded border dark:bg-gray-700 dark:text-gray-200">
         <button class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded">Go</button>
       </form>
 
-      <!-- Indikator total halaman -->
       <span id="pageInfo" class="text-gray-700 dark:text-gray-300 text-sm"></span>
 
       <button id="nextPage"
-        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">
-        Next ▶
-      </button>
+        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">Next ▶</button>
     </div>
   </main>
 
+  <!-- FOOTER -->
   <footer class="bg-gray-800 dark:bg-gray-950 text-gray-300 text-center py-4 mt-6">
     <p>© 2025 BKP IND.</p>
   </footer>
-  <script type='text/javascript'
-    src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
-  <script>
-    // Ambil query string dari URL
-    const urlParams = new URLSearchParams(window.location.search);
-    let currentPage = parseInt(urlParams.get("page")) || 1;
-    let currentQuery = urlParams.get("query") || "teen";
-    const perPage = 12;
 
-    const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
+  <!-- MONETISASI (opsional) -->
+  <script type='text/javascript' src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
+
+  <script>
+    /* ---------- CONFIG ---------- */
+    const baseUrl = "https://www.eporner.com/api/v2/video/search/";
+    const perPage = 12;
     const container = document.getElementById("video-list");
     const pageInfo = document.getElementById("pageInfo");
 
-    async function loadVideos(page = 1, query = "viral") {
+    /* ---------- STATE ---------- */
+    const urlParams = new URLSearchParams(location.search);
+    let currentPage = Math.max(1, parseInt(urlParams.get("page")) || 1);
+    let currentQuery = urlParams.get("query")?.trim() || "indo";
+
+    /* ---------- HELPERS ---------- */
+    const escapeHTML = str => String(str).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
+
+    function buildURL(page, query) {
+      const sp = new URLSearchParams({
+        thumbsize: "big",
+        order: "top-weekly",
+        gay: "1",
+        lq: "1",
+        format: "json",
+        query: query,
+        per_page: perPage,
+        page: page
+      });
+      return `${baseUrl}?${sp.toString()}`;
+    }
+
+    /* ---------- RENDER ---------- */
+    async function loadVideos(page = 1, query = currentQuery) {
       try {
-        const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
-        const res = await fetch(url);
+        const res = await fetch(buildURL(page, query));
+        if (!res.ok) throw new Error(res.status);
         const data = await res.json();
 
         container.innerHTML = "";
-
-        data.videos.forEach(video => {
+        data.videos.forEach(v => {
+          const bigThumb = v.thumbs?.find(t => t.size === "big")?.src || "";
           const card = document.createElement("div");
           card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
-
           card.innerHTML = `
-    <div class="relative">
-      <a href="#" class="video-link" 
-         data-embed="embed.html#${video.embed}" 
-         data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
-        <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
-      </a>
-      <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-        ${video.length_min}
-      </span>
-    </div>
-    <div class="p-3">
-      <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
-        ${video.title}
-      </h3>
-      <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
-        <span>👁️ ${video.views}</span>
-        <span>⭐ ${video.rate}%</span>
-      </div>
-      <p class="text-xs text-gray-400">Added: ${video.added}</p>
-    </div>
-  `;
+            <div class="relative">
+              <a href="#" class="video-link"
+                data-embed="embed.html#${encodeURIComponent(v.embed)}"
+                data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
+                <img src="${bigThumb}" loading="lazy" class="w-full h-32 object-cover rounded-lg">
+              </a>
+              <span class="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
+                ${escapeHTML(v.length_min)}
+              </span>
+            </div>
+            <div class="p-3">
+              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
+                ${escapeHTML(v.title)}
+              </h3>
+              <div class="flex gap-2 text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <span>👁 ${escapeHTML(v.views)}</span>
+                <span>⭐ ${escapeHTML(v.rate)}%</span>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Added: ${escapeHTML(v.added)}</p>
+            </div>`;
           container.appendChild(card);
         });
 
-        // Update input page number
-        document.getElementById("pageInput").value = currentPage;
+        currentPage = page;
+        currentQuery = query;
 
-        // Update indikator halaman
-        pageInfo.textContent = `Page ${currentPage} of ${data.total_pages}`;
+        document.getElementById("pageInput").value = page;
+        pageInfo.textContent = `Page ${page} of ${data.total_pages}`;
+        document.getElementById("prevPage").disabled = page <= 1;
+        document.getElementById("nextPage").disabled = page >= data.total_pages;
 
-        // Disable prev kalau di page 1
-        document.getElementById("prevPage").disabled = currentPage <= 1;
-
-        // Disable next kalau sudah sampai akhir
-        document.getElementById("nextPage").disabled = currentPage >= data.total_pages;
-
+        history.replaceState({}, "", `?query=${encodeURIComponent(query)}&page=${page}`);
       } catch (err) {
         console.error("Gagal fetch video:", err);
+        container.innerHTML = `<p class="col-span-full text-center text-red-600">Gagal memuat data.</p>`;
       }
     }
 
-    // Load video saat pertama kali
-    loadVideos(currentPage, currentQuery);
-
-    // Tombol Next Page
-    document.getElementById("nextPage").addEventListener("click", () => {
-      window.location.href = `?query=${currentQuery}&page=${currentPage + 1}`;
-    });
-
-    // Tombol Prev Page
-    document.getElementById("prevPage").addEventListener("click", () => {
-      if (currentPage > 1) {
-        window.location.href = `?query=${currentQuery}&page=${currentPage - 1}`;
-      }
-    });
-
-    // Input page form
-    document.getElementById("pageForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const page = parseInt(document.getElementById("pageInput").value);
-      if (page >= 1) {
-        window.location.href = `?query=${currentQuery}&page=${page}`;
-      }
-    });
-
-    // Search form
+    /* ---------- EVENTS ---------- */
     document.getElementById("searchForm").addEventListener("submit", e => {
       e.preventDefault();
-      const query = document.getElementById("searchInput").value.trim();
-      if (query) {
-        window.location.href = `?query=${query}&page=1`;
-      }
+      const q = document.getElementById("searchInput").value.trim();
+      if (q) loadVideos(1, q);
     });
 
-    // Dark mode toggle
+    document.getElementById("pageForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const p = Math.max(1, parseInt(document.getElementById("pageInput").value) || 1);
+      loadVideos(p, currentQuery);
+    });
+
+    document.getElementById("prevPage").addEventListener("click", () => {
+      if (currentPage > 1) loadVideos(currentPage - 1, currentQuery);
+    });
+
+    document.getElementById("nextPage").addEventListener("click", () => {
+      loadVideos(currentPage + 1, currentQuery);
+    });
+
+    /* ---------- DARK MODE ---------- */
     const darkToggle = document.getElementById("darkToggle");
     const html = document.documentElement;
 
-    if (localStorage.theme === "dark" ||
-      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      html.classList.add("dark");
-      darkToggle.innerText = "☀️";
+    function setTheme(dark) {
+      html.classList.toggle("dark", dark);
+      darkToggle.textContent = dark ? "☀️" : "🌙";
+      localStorage.theme = dark ? "dark" : "light";
     }
 
-    darkToggle.addEventListener("click", () => {
-      html.classList.toggle("dark");
-      if (html.classList.contains("dark")) {
-        localStorage.theme = "dark";
-        darkToggle.innerText = "☀️";
-      } else {
-        localStorage.theme = "light";
-        darkToggle.innerText = "🌙";
-      }
-    });
+    const preferDark = localStorage.theme === "dark" ||
+      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    setTheme(preferDark);
 
-    // Event listener klik video
+    darkToggle.addEventListener("click", () => setTheme(!html.classList.contains("dark")));
+
+    /* ---------- KLIK VIDEO ---------- */
     container.addEventListener("click", e => {
       const link = e.target.closest(".video-link");
-      if (link) {
-        e.preventDefault();
-        window.open(link.dataset.ad, "_blank"); // buka iklan
-        setTimeout(() => {
-          window.location.href = link.dataset.embed; // buka embed setelah 1 detik
-        }, 1000);
-      }
+      if (!link) return;
+      e.preventDefault();
+      window.open(link.dataset.ad, "_blank");
+      setTimeout(() => {
+        location.href = link.dataset.embed;
+      }, 1000);
     });
+
+    /* ---------- INIT ---------- */
+    document.getElementById("searchInput").value = currentQuery;
+    loadVideos(currentPage, currentQuery);
   </script>
 </body>
-
 </html>

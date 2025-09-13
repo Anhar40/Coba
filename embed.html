@@ -16,28 +16,32 @@
 
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
 
-  <!-- Navbar -->
   <nav class="bg-blue-600 dark:bg-blue-800 text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
-      <!-- Logo + Judul -->
-      <a href="/" class="flex items-center space-x-3">
-        <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
-        
-      </a>
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
 
-      <!-- Search + Dark mode toggle -->
-      <div class="flex items-center space-x-3">
-        <form id="searchForm" class="flex">
-          <input id="searchInput" type="text" placeholder="Cari video..."
-            class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none w-40 sm:w-56">
-          <button class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg">🔍</button>
-        </form>
+        <!-- Logo + Judul -->
+        <a href="/" class="flex items-center gap-3 shrink-0">
+          <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+          <span class="hidden sm:inline font-semibold">BKP IND</span>
+        </a>
 
-        <!-- Tombol dark mode -->
-        <button id="darkToggle"
-          class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg shadow transition">
-          🌙
-        </button>
+        <!-- Search + Dark toggle -->
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <form id="searchForm" class="flex w-full sm:w-auto">
+            <input id="searchInput" type="text" placeholder="Cari video..." class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700
+                        focus:outline-none w-full sm:w-56">
+            <button type="submit"
+              class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg shrink-0">
+              🔍
+            </button>
+          </form>
+
+          <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200
+                       px-3 py-2 rounded-lg shadow transition shrink-0">
+            🌙
+          </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -63,55 +67,68 @@
   <script type='text/javascript'
     src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
   <script>
-    // Ambil query string dari URL
-    const urlParams = new URLSearchParams(window.location.search);
-    let currentPage = parseInt(urlParams.get("page")) || 1;
+    /* ---------- CONFIG ---------- */
+    const baseUrl = "https://www.eporner.com/api/v2/video/search/";
+    const perPage = 12;
+    const container = document.getElementById("video-list");
+    const pageInfo = document.getElementById("pageInfo");
 
-    const queries = ["indonesia", "viral", "colmek", "sepong"];
+    /* ---------- STATE ---------- */
+    const urlParams = new URLSearchParams(location.search);
+    let currentPage = Math.max(1, parseInt(urlParams.get("page")) || 1);
+    const queries = ["prank", "terbaru", "gojek", "live"];
+    let currentQuery = queries[Math.floor(Math.random() * queries.length)];
 
-        // Ambil dari URL dulu, kalau tidak ada pilih random
-    let currentQuery = urlParams.get("query") || urlParams.get("title") || queries[Math.floor(Math.random() * queries.length)];
+    /* ---------- HELPERS ---------- */
+    const escapeHTML = str => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
 
-    const perPage = 8;
+    function buildURL(page, query) {
+      const sp = new URLSearchParams({
+        thumbsize: "big",
+        order: "top-weekly",
+        gay: "1",
+        lq: "1",
+        format: "json",
+        query: query,
+        per_page: perPage,
+        page: page
+      });
+      return `${baseUrl}?${sp.toString()}`;
+    }
 
-
-    const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
-
+    /* ---------- RENDER ---------- */
     async function loadVideos(page = 1, query = currentQuery) {
       try {
-        const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
-        const res = await fetch(url);
+        const res = await fetch(buildURL(page, query));
+        if (!res.ok) throw new Error(res.status);
         const data = await res.json();
 
-        const container = document.getElementById("video-list");
         container.innerHTML = "";
-
         data.videos.forEach(video => {
+          const bigThumb = video.thumbs?.find(t => t.size === "big")?.src || "";
           const card = document.createElement("div");
           card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
-
           card.innerHTML = `
-    <div class="relative">
-      <a href="#" class="video-link" 
-         data-embed="embed2.html?embed=${encodeURIComponent(video.embed)}" 
-         data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
-        <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
-      </a>
-      <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-        ${video.length_min}
-      </span>
-    </div>
-    <div class="p-3">
-      <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
-        ${video.title}
-      </h3>
-      <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
-        <span>👁️ ${video.views}</span>
-        <span>⭐ ${video.rate}%</span>
-      </div>
-      <p class="text-xs text-gray-400">Added: ${video.added}</p>
-    </div>
-  `;
+            <div class="relative">
+              <a href="#" class="video-link"
+                data-embed="embed2.html#${encodeURIComponent(video.embed)}"
+                data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
+                <img src="${bigThumb}" loading="lazy" class="w-full h-32 object-cover rounded-lg">
+              </a>
+              <span class="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
+                ${escapeHTML(video.length_min)}
+              </span>
+            </div>
+            <div class="p-3">
+              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
+                ${escapeHTML(video.title)}
+              </h3>
+              <div class="flex gap-2 text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <span>👁 ${escapeHTML(video.views)}</span>
+                <span>⭐ ${escapeHTML(video.rate)}%</span>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Added: ${escapeHTML(video.added)}</p>
+            </div>`;
           container.appendChild(card);
 
           // Pasang listener di sini supaya langsung bekerja
