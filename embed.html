@@ -67,10 +67,12 @@
     const urlParams = new URLSearchParams(window.location.search);
     let currentPage = parseInt(urlParams.get("page")) || 1;
 
-    // Ambil query dari 'query' dulu, kalau tidak ada pakai 'title', kalau keduanya kosong default 'viral'
-    let currentQuery = urlParams.get("query") || urlParams.get("title") || "viral";
+    const queries = ["indonesia", "viral", "colmek", "sepong"];
 
-    const perPage = 12;
+        // Ambil dari URL dulu, kalau tidak ada pilih random
+    let currentQuery = urlParams.get("query") || urlParams.get("title") || queries[Math.floor(Math.random() * queries.length)];
+
+    const perPage = 8;
 
 
     const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
