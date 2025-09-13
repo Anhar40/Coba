@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BKP IND</title>
   <script src="https://cdn.tailwindcss.com"></script>
-<script>
+  <script>
     // Aktifkan dark mode di Tailwind
     tailwind.config = {
       darkMode: 'class'
     }
   </script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
 
   <!-- Navbar -->
   <nav class="bg-blue-600 dark:bg-blue-800 text-white shadow-lg sticky top-0 z-50">
     <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
-      <h1 class="text-2xl font-bold">BKP IND</h1>
+      <!-- Logo + Judul -->
+      <a href="#" class="flex items-center space-x-3">
+        <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        
+      </a>
 
       <!-- Search + Dark mode toggle -->
       <div class="flex items-center space-x-3">
         <form id="searchForm" class="flex">
-          <input id="searchInput" type="text" placeholder="Cari video..." class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none w-40 sm:w-56">
+          <input id="searchInput" type="text" placeholder="Cari video..."
+            class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none w-40 sm:w-56">
           <button class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg">🔍</button>
         </form>
 
         <!-- Tombol dark mode -->
-        <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg shadow transition">
+        <button id="darkToggle"
+          class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg shadow transition">
           🌙
         </button>
       </div>
     </div>
   </nav>
+
 
   <!-- Konten -->
   <main class="flex-grow flex items-center justify-center px-4 py-8">
@@ -42,101 +51,108 @@
   </main>
 
   <!-- Konten -->
-  <main class="flex-grow max-w-6xl mx-auto px-4 py-6 hidden">
+  <main class="flex-grow max-w-6xl mx-auto px-4 py-6 ">
     <!-- Grid Video -->
     <div id="video-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
-
-    <!-- Tombol Load More -->
-    <div class="flex justify-center mt-8">
-      <button id="loadMore" class="px-6 py-3 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 text-white text-lg rounded-xl shadow-md transition disabled:bg-gray-400 disabled:cursor-not-allowed">
-        Load More
-      </button>
-    </div>
   </main>
 
   <!-- Footer -->
   <footer class="bg-gray-800 dark:bg-gray-950 text-gray-300 text-center py-4 mt-6">
     <p>© 2025 BKP IND.</p>
   </footer>
-   <script type='text/javascript' src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
+  <script type='text/javascript'
+    src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
   <script>
-    let currentPage = 1;
-    let currentQuery = "teen";
-    const perPage = 12; 
-    const baseUrl = "https://www.eporner.com/api/v2/video/search/?query=teen&per_page=10&page=2&thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
+    // Ambil query string dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get("page")) || 1;
 
-    async function loadVideos(page = 1, query = "teen") {
+    // Ambil query dari 'query' dulu, kalau tidak ada pakai 'title', kalau keduanya kosong default 'viral'
+    let currentQuery = urlParams.get("query") || urlParams.get("title") || "viral";
+
+    const perPage = 12;
+
+
+    const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
+
+    async function loadVideos(page = 1, query = currentQuery) {
       try {
         const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
         const res = await fetch(url);
         const data = await res.json();
 
         const container = document.getElementById("video-list");
+        container.innerHTML = "";
 
         data.videos.forEach(video => {
           const card = document.createElement("div");
           card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
 
           card.innerHTML = `
-             <div class="relative">
-              <a href="embed.html#${video.embed}">
-                <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
-               </a>
-              <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${video.length_min}</span>
-            </div>
-            <div class="p-3">
-              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">${video.title}</h3>
-              <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
-                <span>👁️ ${video.views}</span>
-                <span>⭐ ${video.rate}%</span>
-              </div>
-              <p class="text-xs text-gray-400">Added: ${video.added}</p>
-            </div>
-          `;
+    <div class="relative">
+      <a href="#" class="video-link" 
+         data-embed="embed2.html?embed=${encodeURIComponent(video.embed)}" 
+         data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
+        <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
+      </a>
+      <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+        ${video.length_min}
+      </span>
+    </div>
+    <div class="p-3">
+      <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
+        ${video.title}
+      </h3>
+      <div class="flex items-center text-xs text-gray-600 dark:text-gray-400 mt-1 space-x-2">
+        <span>👁️ ${video.views}</span>
+        <span>⭐ ${video.rate}%</span>
+      </div>
+      <p class="text-xs text-gray-400">Added: ${video.added}</p>
+    </div>
+  `;
           container.appendChild(card);
+
+          // Pasang listener di sini supaya langsung bekerja
+          card.querySelector(".video-link").addEventListener("click", (e) => {
+            e.preventDefault();
+            const adUrl = e.currentTarget.dataset.ad;
+            const embedUrl = e.currentTarget.dataset.embed;
+
+            // Buka shortlink di tab baru
+            window.open(adUrl, "_blank");
+
+            // Buka halaman embed sendiri di tab saat ini
+            window.location.href = embedUrl;
+          });
         });
 
 
-        if (page >= data.total_pages) {
-          const btn = document.getElementById("loadMore");
-          btn.disabled = true;
-          btn.innerText = "Tidak ada lagi video";
+        // Update input page number
+        document.getElementById("pageInput").value = currentPage;
+
+        // Disable prev kalau di page 1
+        document.getElementById("prevPage").disabled = currentPage <= 1;
+
+        // Disable next kalau sudah sampai akhir
+        if (currentPage >= data.total_pages) {
+          document.getElementById("nextPage").disabled = true;
+        } else {
+          document.getElementById("nextPage").disabled = false;
         }
+
+        // Update indikator total halaman
+        document.getElementById("totalPages").innerText = `of ${data.total_pages}`;
 
       } catch (err) {
         console.error("Gagal fetch video:", err);
       }
     }
-
-    // Load pertama kali
-    loadVideos(currentPage, currentQuery);
-
-    // Tombol Load More
-    document.getElementById("loadMore").addEventListener("click", () => {
-      currentPage++;
-      loadVideos(currentPage, currentQuery);
-    });
-
-    // Search form
-    document.getElementById("searchForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const query = document.getElementById("searchInput").value.trim();
-      if (query) {
-        currentPage = 1;
-        currentQuery = query;
-        document.getElementById("video-list").innerHTML = ""; // reset
-        document.getElementById("loadMore").disabled = false;
-        document.getElementById("loadMore").innerText = "Load More";
-        loadVideos(currentPage, currentQuery);
-      }
-    });
-
     // Dark mode toggle
     const darkToggle = document.getElementById("darkToggle");
     const html = document.documentElement;
 
-    // Cek preferensi user
-    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (localStorage.theme === "dark" ||
+      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
       html.classList.add("dark");
       darkToggle.innerText = "☀️";
     }
@@ -151,7 +167,10 @@
         darkToggle.innerText = "🌙";
       }
     });
+    // Panggil pertama kali
+    loadVideos(currentPage, currentQuery);
   </script>
+
 
   <script>
     // Ambil URL dari hash
@@ -169,4 +188,5 @@
     }
   </script>
 </body>
+
 </html>

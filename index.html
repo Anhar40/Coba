@@ -6,37 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BKP IND - Koleksi Video BKP Terbaru</title>
 
-  <!-- SEO Meta Tags -->
-  <meta name="google-site-verification" content="fLb-2SuPUVg14QQlOtM5GzleweBsmQ_Qc48dBuZ78j0" />
-  <meta name="description"
-    content="BKP IND - Platform streaming Video Bokep terbaru, trending, dan populer dengan tampilan modern dan user-friendly. Cari, tonton, dan temukan video favoritmu dengan mudah.">
-  <meta name="keywords"
-    content="Bokep Indo, video Bokep, video porno, streaming bokep, koleksi video bokep terbaru, BKP IND, bokep terbaru, bokep viral, Indonesia porno, bokep terbaru terviral, Indonesia viral, viral indo, viral Indonesia, viral tiktok, viral">
-  <meta name="author" content="BKP IND">
-
-  <!-- Open Graph (untuk preview di sosial media) -->
-  <meta property="og:title" content="BKP IND - Koleksi Video BKP Terbaru">
-  <meta property="og:description"
-    content="Nikmati koleksi video bokep terbaru dan trending dengan desain modern dan responsif.">
-  <meta property="og:image" content="https://bkpind.vercel.app/logo.jpg">
-  <meta property="og:url" content="https://bkpind.vercel.app">
-  <meta property="og:type" content="website">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BKP IND - Koleksi Video bokep Terbaru">
-  <meta name="twitter:description" content="Streaming embed video terbaru, trending, dan populer.">
-  <meta name="twitter:image" content="https://bkpind.vercel.app/logo.jpg">
-
-  <!-- Favicon -->
-  <link rel="icon" href="logo.jpg" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
-
   <script>
-    // Aktifkan dark mode di Tailwind
-    tailwind.config = {
-      darkMode: 'class'
-    }
+    tailwind.config = { darkMode: 'class' }
   </script>
 </head>
 
@@ -45,7 +17,11 @@
   <!-- Navbar -->
   <nav class="bg-blue-600 dark:bg-blue-800 text-white shadow-lg sticky top-0 z-50">
     <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
-      <h1 class="text-2xl font-bold">BKP IND</h1>
+      <!-- Logo + Judul -->
+      <a href="#" class="flex items-center space-x-3">
+        <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        
+      </a>
 
       <!-- Search + Dark mode toggle -->
       <div class="flex items-center space-x-3">
@@ -66,67 +42,66 @@
 
   <!-- Konten -->
   <main class="flex-grow max-w-6xl mx-auto px-4 py-6">
-    <!-- Grid Video -->
     <div id="video-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
 
-    <!-- Tombol Load More -->
-    <div class="flex justify-center mt-8">
-      <button id="loadMore"
-        class="px-6 py-3 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 text-white text-lg rounded-xl shadow-md transition disabled:bg-gray-400 disabled:cursor-not-allowed">
-        Load More
+    <!-- Navigasi Halaman -->
+    <div class="flex justify-center items-center mt-8 space-x-2">
+      <button id="prevPage"
+        class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">
+        ◀ Prev
+      </button>
+
+      <form id="pageForm" class="flex items-center space-x-2">
+        <label for="pageInput" class="text-gray-700 dark:text-gray-300">Page:</label>
+        <input id="pageInput" type="number" min="1"
+          class="w-16 px-2 py-1 rounded border dark:bg-gray-700 dark:text-gray-200" />
+        <button class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded">Go</button>
+      </form>
+
+      <!-- Indikator total halaman -->
+      <span id="pageInfo" class="text-gray-700 dark:text-gray-300 text-sm"></span>
+
+      <button id="nextPage"
+        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">
+        Next ▶
       </button>
     </div>
   </main>
 
-  <!-- Footer -->
   <footer class="bg-gray-800 dark:bg-gray-950 text-gray-300 text-center py-4 mt-6">
     <p>© 2025 BKP IND.</p>
   </footer>
   <script type='text/javascript'
     src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
   <script>
-    let currentPage = 1;
-    let currentQuery = "teen";
+    // Ambil query string dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get("page")) || 1;
+    let currentQuery = urlParams.get("query") || "teen";
     const perPage = 12;
 
-    // Base URL tanpa param page/query biar fleksibel
     const baseUrl = "https://www.eporner.com/api/v2/video/search/?thumbsize=big&order=top-weekly&gay=1&lq=1&format=json";
+    const container = document.getElementById("video-list");
+    const pageInfo = document.getElementById("pageInfo");
 
-    // Daftar query random (optional)
-    const queryList = ["teen", "milf", "amateur", "asian", "couple", "solo"];
-
-    // Ambil query random dari list
-    function getRandomQuery() {
-      return queryList[Math.floor(Math.random() * queryList.length)];
-    }
-
-    // Ambil page random dari 1–50 (bisa disesuaikan dengan total_pages API)
-    function getRandomPage(max = 50) {
-      return Math.floor(Math.random() * max) + 1;
-    }
-
-    async function loadVideos(page = 1, query = "teen") {
+    async function loadVideos(page = 1, query = "viral") {
       try {
         const url = `${baseUrl}&query=${query}&per_page=${perPage}&page=${page}`;
         const res = await fetch(url);
         const data = await res.json();
 
-        const container = document.getElementById("video-list");
+        container.innerHTML = "";
 
         data.videos.forEach(video => {
           const card = document.createElement("div");
           card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
 
-          // masukkan shortlink ke data-ad
           card.innerHTML = `
     <div class="relative">
-      <a href="#" 
-         class="video-link" 
+      <a href="#" class="video-link" 
          data-embed="embed.html#${video.embed}" 
          data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
-        <iframe src="${video.embed}" 
-                allowfullscreen 
-                class="w-full h-32 rounded-lg pointer-events-none"></iframe>
+        <iframe src="${video.embed}" allowfullscreen class="w-full h-32 rounded-lg pointer-events-none"></iframe>
       </a>
       <span class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
         ${video.length_min}
@@ -146,43 +121,45 @@
           container.appendChild(card);
         });
 
-        // event listener
-        container.addEventListener("click", e => {
-          const link = e.target.closest(".video-link");
-          if (link) {
-            e.preventDefault();
+        // Update input page number
+        document.getElementById("pageInput").value = currentPage;
 
-            // buka shortlink di tab baru
-            window.open(link.dataset.ad, "_blank");
+        // Update indikator halaman
+        pageInfo.textContent = `Page ${currentPage} of ${data.total_pages}`;
 
-            // setelah delay (misal 3 detik) buka video embed
-            setTimeout(() => {
-              window.location.href = link.dataset.embed;
-            }, 3000); // ganti angka 3000 = 3 detik
-          }
-        });
+        // Disable prev kalau di page 1
+        document.getElementById("prevPage").disabled = currentPage <= 1;
 
-
-        if (page >= data.total_pages) {
-          const btn = document.getElementById("loadMore");
-          btn.disabled = true;
-          btn.innerText = "Tidak ada lagi video";
-        }
+        // Disable next kalau sudah sampai akhir
+        document.getElementById("nextPage").disabled = currentPage >= data.total_pages;
 
       } catch (err) {
         console.error("Gagal fetch video:", err);
       }
     }
 
-    // Load pertama kali (random query & random page)
-    currentQuery = getRandomQuery();
-    currentPage = getRandomPage(100); // misalnya max 100 page
+    // Load video saat pertama kali
     loadVideos(currentPage, currentQuery);
 
-    // Tombol Load More
-    document.getElementById("loadMore").addEventListener("click", () => {
-      currentPage++;
-      loadVideos(currentPage, currentQuery);
+    // Tombol Next Page
+    document.getElementById("nextPage").addEventListener("click", () => {
+      window.location.href = `?query=${currentQuery}&page=${currentPage + 1}`;
+    });
+
+    // Tombol Prev Page
+    document.getElementById("prevPage").addEventListener("click", () => {
+      if (currentPage > 1) {
+        window.location.href = `?query=${currentQuery}&page=${currentPage - 1}`;
+      }
+    });
+
+    // Input page form
+    document.getElementById("pageForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const page = parseInt(document.getElementById("pageInput").value);
+      if (page >= 1) {
+        window.location.href = `?query=${currentQuery}&page=${page}`;
+      }
     });
 
     // Search form
@@ -190,12 +167,7 @@
       e.preventDefault();
       const query = document.getElementById("searchInput").value.trim();
       if (query) {
-        currentPage = 1;
-        currentQuery = query;
-        document.getElementById("video-list").innerHTML = ""; // reset
-        document.getElementById("loadMore").disabled = false;
-        document.getElementById("loadMore").innerText = "Load More";
-        loadVideos(currentPage, currentQuery);
+        window.location.href = `?query=${query}&page=1`;
       }
     });
 
@@ -203,7 +175,8 @@
     const darkToggle = document.getElementById("darkToggle");
     const html = document.documentElement;
 
-    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (localStorage.theme === "dark" ||
+      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
       html.classList.add("dark");
       darkToggle.innerText = "☀️";
     }
@@ -218,8 +191,19 @@
         darkToggle.innerText = "🌙";
       }
     });
-  </script>
 
+    // Event listener klik video
+    container.addEventListener("click", e => {
+      const link = e.target.closest(".video-link");
+      if (link) {
+        e.preventDefault();
+        window.open(link.dataset.ad, "_blank"); // buka iklan
+        setTimeout(() => {
+          window.location.href = link.dataset.embed; // buka embed setelah 1 detik
+        }, 1000);
+      }
+    });
+  </script>
 </body>
 
 </html>
