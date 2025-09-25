@@ -2,210 +2,242 @@
 <html lang="id">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BKP IND</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    // Aktifkan dark mode di Tailwind
-    tailwind.config = {
-      darkMode: 'class'
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BKP IND</title>
+    
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+    <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-ima@2.3.0/dist/videojs-ima.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Aktifkan dark mode di Tailwind
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
 
-  <nav class="bg-blue-600 dark:bg-blue-800 text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3">
-      <div class="flex items-center justify-between gap-4">
+    <nav class="bg-blue-600 dark:bg-blue-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between gap-4">
 
-        <!-- Logo + Judul -->
-        <a href="/" class="flex items-center gap-3 shrink-0">
-          <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
-          <span class="hidden sm:inline font-semibold">BKP IND</span>
-        </a>
+                <a href="/" class="flex items-center gap-3 shrink-0">
+                    <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+                    <span class="hidden sm:inline font-semibold">BKP IND</span>
+                </a>
 
-        <!-- Search + Dark toggle -->
-        <div class="flex items-center gap-3 w-full sm:w-auto">
-          <form id="searchForm" class="flex w-full sm:w-auto">
-            <input id="searchInput" type="text" placeholder="Cari video..." class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700
-                        focus:outline-none w-full sm:w-56">
-            <button type="submit"
-              class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg shrink-0">
-              🔍
-            </button>
-          </form>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <form id="searchForm" class="flex w-full sm:w-auto">
+                        <input id="searchInput" type="text" placeholder="Cari video..." class="px-3 py-2 rounded-l-lg text-gray-700 dark:text-gray-200 dark:bg-gray-700
+                                                focus:outline-none w-full sm:w-56">
+                        <button type="submit"
+                            class="bg-blue-800 dark:bg-blue-900 hover:bg-blue-900 px-4 py-2 rounded-r-lg shrink-0">
+                            🔍
+                        </button>
+                    </form>
 
-          <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200
-                       px-3 py-2 rounded-lg shadow transition shrink-0">
-            🌙
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-
-  <!-- Konten -->
-  <main class="flex-grow flex items-center justify-center px-4 py-8">
-    <div id="video-container" class="w-full max-w-3xl bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-      <iframe id="videoFrame" src="" allowfullscreen class="w-full h-[45vh] rounded-lg"></iframe>
-    </div>
-  </main>
-
-  <!-- Konten -->
-  <main class="flex-grow max-w-6xl mx-auto px-4 py-6 ">
-    <!-- Grid Video -->
-    <div id="video-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 dark:bg-gray-950 text-gray-300 text-center py-4 mt-6">
-    <p>© 2025 BKP IND.</p>
-  </footer>
-  <script type='text/javascript'
-    src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
-  <script>
-    /* ---------- CONFIG ---------- */
-    const baseUrl = "https://www.eporner.com/api/v2/video/search/";
-    const perPage = 12;
-    const container = document.getElementById("video-list");
-    const pageInfo = document.getElementById("pageInfo");
-
-    /* ---------- STATE ---------- */
-    const urlParams = new URLSearchParams(location.search);
-    let currentPage = Math.max(1, parseInt(urlParams.get("page")) || 1);
-    const queries = ["prank", "terbaru", "gojek", "live"];
-    let currentQuery = queries[Math.floor(Math.random() * queries.length)];
-
-    /* ---------- HELPERS ---------- */
-    const escapeHTML = str => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
-
-    function buildURL(page, query) {
-      const sp = new URLSearchParams({
-        thumbsize: "big",
-        order: "top-weekly",
-        gay: "1",
-        lq: "1",
-        format: "json",
-        query: query,
-        per_page: perPage,
-        page: page
-      });
-      return `${baseUrl}?${sp.toString()}`;
-    }
-
-    /* ---------- RENDER ---------- */
-    async function loadVideos(page = 1, query = currentQuery) {
-      try {
-        const res = await fetch(buildURL(page, query));
-        if (!res.ok) throw new Error(res.status);
-        const data = await res.json();
-
-        container.innerHTML = "";
-        data.videos.forEach(video => {
-          const bigThumb = video.thumbs?.find(t => t.size === "big")?.src || "";
-          const card = document.createElement("div");
-          card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
-          card.innerHTML = `
-            <div class="relative">
-              <a href="#" class="video-link"
-                data-embed="embed2.html#${encodeURIComponent(video.embed)}"
-                data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
-                <img src="${bigThumb}" loading="lazy" class="w-full h-32 object-cover rounded-lg">
-              </a>
-              <span class="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
-                ${escapeHTML(video.length_min)}
-              </span>
+                    <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200
+                                                px-3 py-2 rounded-lg shadow transition shrink-0">
+                            🌙
+                    </button>
+                </div>
             </div>
-            <div class="p-3">
-              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
-                ${escapeHTML(video.title)}
-              </h3>
-              <div class="flex gap-2 text-xs text-gray-600 dark:text-gray-400 mt-1">
-                <span>👁 ${escapeHTML(video.views)}</span>
-                <span>⭐ ${escapeHTML(video.rate)}%</span>
-              </div>
-              <p class="text-xs text-gray-400 mt-1">Added: ${escapeHTML(video.added)}</p>
-            </div>`;
-          container.appendChild(card);
-
-          // Pasang listener di sini supaya langsung bekerja
-          card.querySelector(".video-link").addEventListener("click", (e) => {
-            e.preventDefault();
-            const adUrl = e.currentTarget.dataset.ad;
-            const embedUrl = e.currentTarget.dataset.embed;
-
-            // Buka shortlink di tab baru
-            window.open(adUrl, "_blank");
-
-            // Buka halaman embed sendiri di tab saat ini
-            window.location.href = embedUrl;
-          });
-        });
+        </div>
+    </nav>
 
 
-        // Update input page number
-        document.getElementById("pageInput").value = currentPage;
+    <main class="flex-grow flex items-center justify-center px-4 py-8">
+        <div id="video-container" class="w-full max-w-3xl bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <video id="my-video-player" class="video-js vjs-default-skin vjs-16-9 w-full h-[45vh] rounded-lg" controls preload="auto">
+                <p class="vjs-no-js">
+                    Untuk melihat video ini, tolong aktifkan JavaScript.
+                </p>
+            </video>
+        </div>
+    </main>
 
-        // Disable prev kalau di page 1
-        document.getElementById("prevPage").disabled = currentPage <= 1;
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-6 ">
+        <div id="video-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+    </main>
 
-        // Disable next kalau sudah sampai akhir
-        if (currentPage >= data.total_pages) {
-          document.getElementById("nextPage").disabled = true;
-        } else {
-          document.getElementById("nextPage").disabled = false;
+    <footer class="bg-gray-800 dark:bg-gray-950 text-gray-300 text-center py-4 mt-6">
+        <p>© 2025 BKP IND.</p>
+    </footer>
+    <script type='text/javascript'
+        src='//pl27616949.revenuecpmgate.com/99/ac/c4/99acc473b53e337bf85e5a490ed3d440.js'></script>
+    <script>
+        /* ---------- CONFIG ---------- */
+        const baseUrl = "https://www.eporner.com/api/v2/video/search/";
+        const perPage = 12;
+        const container = document.getElementById("video-list");
+        const pageInfo = document.getElementById("pageInfo");
+
+        /* ---------- STATE ---------- */
+        const urlParams = new URLSearchParams(location.search);
+        let currentPage = Math.max(1, parseInt(urlParams.get("page")) || 1);
+        const queries = ["prank", "terbaru", "gojek", "live"];
+        let currentQuery = queries[Math.floor(Math.random() * queries.length)];
+
+        /* ---------- HELPERS ---------- */
+        const escapeHTML = str => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+
+        function buildURL(page, query) {
+            const sp = new URLSearchParams({
+                thumbsize: "big",
+                order: "top-weekly",
+                gay: "1",
+                lq: "1",
+                format: "json",
+                query: query,
+                per_page: perPage,
+                page: page
+            });
+            return `${baseUrl}?${sp.toString()}`;
         }
 
-        // Update indikator total halaman
-        document.getElementById("totalPages").innerText = `of ${data.total_pages}`;
+        /* ---------- RENDER ---------- */
+        async function loadVideos(page = 1, query = currentQuery) {
+            try {
+                const res = await fetch(buildURL(page, query));
+                if (!res.ok) throw new Error(res.status);
+                const data = await res.json();
 
-      } catch (err) {
-        console.error("Gagal fetch video:", err);
-      }
-    }
-    // Dark mode toggle
-    const darkToggle = document.getElementById("darkToggle");
-    const html = document.documentElement;
+                container.innerHTML = "";
+                data.videos.forEach(video => {
+                    const bigThumb = video.thumbs?.find(t => t.size === "big")?.src || "";
+                    const card = document.createElement("div");
+                    card.className = "bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group";
+                    card.innerHTML = `
+                        <div class="relative">
+                            <a href="#" class="video-link"
+                                data-embed="embed2.html#${encodeURIComponent(video.embed)}"
+                                data-ad="https://www.revenuecpmgate.com/vsxr5fx8?key=6d167ba92c0ceefeb8225ac38630945b">
+                                <img src="${bigThumb}" loading="lazy" class="w-full h-32 object-cover rounded-lg">
+                            </a>
+                            <span class="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
+                                ${escapeHTML(video.length_min)}
+                            </span>
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
+                                ${escapeHTML(video.title)}
+                            </h3>
+                            <div class="flex gap-2 text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                <span>👁 ${escapeHTML(video.views)}</span>
+                                <span>⭐ ${escapeHTML(video.rate)}%</span>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Added: ${escapeHTML(video.added)}</p>
+                        </div>`;
+                    container.appendChild(card);
 
-    if (localStorage.theme === "dark" ||
-      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      html.classList.add("dark");
-      darkToggle.innerText = "☀️";
-    }
+                    // Pasang listener di sini
+                    card.querySelector(".video-link").addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const adUrl = e.currentTarget.dataset.ad;
+                        const embedUrl = e.currentTarget.dataset.embed;
 
-    darkToggle.addEventListener("click", () => {
-      html.classList.toggle("dark");
-      if (html.classList.contains("dark")) {
-        localStorage.theme = "dark";
-        darkToggle.innerText = "☀️";
-      } else {
-        localStorage.theme = "light";
-        darkToggle.innerText = "🌙";
-      }
-    });
-    // Panggil pertama kali
-    loadVideos(currentPage, currentQuery);
-  </script>
+                        // Buka shortlink di tab baru
+                        window.open(adUrl, "_blank");
+
+                        // Buka halaman embed sendiri di tab saat ini
+                        window.location.href = embedUrl;
+                    });
+                });
 
 
-  <script>
-    // Ambil URL dari hash
-    const embedUrl = window.location.hash.substring(1);
+                // Update input page number
+                if (document.getElementById("pageInput")) {
+                    document.getElementById("pageInput").value = currentPage;
+                }
 
-    if (embedUrl) {
-      document.getElementById("videoFrame").src = decodeURIComponent(embedUrl);
-    } else {
-      document.getElementById("video-container").innerHTML = `
-        <div class="p-8 text-center">
-          <p class="text-xl font-semibold text-red-400">⚠️ Video tidak ditemukan</p>
-          <a href="index.html" class="mt-4 inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white">Kembali ke Beranda</a>
-        </div>
-      `;
-    }
-  </script>
+                // Disable prev kalau di page 1
+                if (document.getElementById("prevPage")) {
+                    document.getElementById("prevPage").disabled = currentPage <= 1;
+                }
+
+                // Disable next kalau sudah sampai akhir
+                if (document.getElementById("nextPage")) {
+                    if (currentPage >= data.total_pages) {
+                        document.getElementById("nextPage").disabled = true;
+                    } else {
+                        document.getElementById("nextPage").disabled = false;
+                    }
+                }
+
+                // Update indikator total halaman
+                if (document.getElementById("totalPages")) {
+                    document.getElementById("totalPages").innerText = `of ${data.total_pages}`;
+                }
+
+            } catch (err) {
+                console.error("Gagal fetch video:", err);
+            }
+        }
+        // Dark mode toggle
+        const darkToggle = document.getElementById("darkToggle");
+        const html = document.documentElement;
+
+        if (localStorage.theme === "dark" ||
+            (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            html.classList.add("dark");
+            darkToggle.innerText = "☀️";
+        }
+
+        darkToggle.addEventListener("click", () => {
+            html.classList.toggle("dark");
+            if (html.classList.contains("dark")) {
+                localStorage.theme = "dark";
+                darkToggle.innerText = "☀️";
+            } else {
+                localStorage.theme = "light";
+                darkToggle.innerText = "🌙";
+            }
+        });
+        // Panggil pertama kali
+        loadVideos(currentPage, currentQuery);
+    </script>
+
+
+    <script>
+        // Ambil URL dari hash
+        const embedUrl = window.location.hash.substring(1);
+
+        if (embedUrl) {
+            // Tentukan URL Iklan VAST Anda
+            const vastAdUrl = 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+            
+            // Inisialisasi pemutar video
+            const player = videojs('my-video-player');
+
+            // Atur plugin IMA (iklan)
+            player.ima({
+                adTagUrl: vastAdUrl,
+            });
+
+            // Atur sumber video utama setelah iklan
+            player.src({
+                src: decodeURIComponent(embedUrl),
+                type: 'video/mp4' // Sesuaikan tipe video jika perlu
+            });
+
+            // Putar video
+            player.load();
+
+        } else {
+            document.getElementById("video-container").innerHTML = `
+                <div class="p-8 text-center">
+                    <p class="text-xl font-semibold text-red-400">⚠️ Video tidak ditemukan</p>
+                    <a href="index.html" class="mt-4 inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white">Kembali ke Beranda</a>
+                </div>
+            `;
+        }
+    </script>
 </body>
 
 </html>
